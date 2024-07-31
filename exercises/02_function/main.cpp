@@ -1,15 +1,17 @@
 #include "../exercise.h"
 
-// TODO: åœ¨è¿™é‡Œå£°æ˜å‡½æ•°
+// TODO: ÔÚÕâÀïÉùÃ÷º¯Êı
+int add(int a, int b); // º¯ÊıÉùÃ÷
 
 int main(int argc, char **argv) {
     ASSERT(add(123, 456) == 123 + 456, "add(123, 456) should be 123 + 456");
 
-    auto x = 1, y = 2;
+    int x = 1, y = 2;
     std::cout << x << " + " << y << " = " << add(x, y) << std::endl;
     return 0;
 }
 
 int add(int a, int b) {
-    // TODO: è¡¥å…¨å‡½æ•°å®šä¹‰ï¼Œä½†ä¸è¦ç§»åŠ¨ä»£ç è¡Œ
+    // ·µ»ØÁ½¸ö²ÎÊıµÄºÍ
+    return a + b; // ²¹È«º¯Êı¶¨Òå
 }

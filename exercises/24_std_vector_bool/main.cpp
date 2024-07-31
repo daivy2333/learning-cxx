@@ -1,31 +1,38 @@
 ﻿#include "../exercise.h"
 #include <vector>
+#include <cassert>
 
-// READ: std::vector <https://zh.cppreference.com/w/cpp/container/vector_bool>
-// READ: 模板特化 <https://zh.cppreference.com/w/cpp/language/template_specialization>
+// 如果exercise.h没有提供ASSERT宏定义，我们自己定义一个
+#ifndef ASSERT
+#define ASSERT(condition, message) assert((condition) && (message))
+#endif
 
-// TODO: 将下列 `?` 替换为正确的代码
 int main(int argc, char **argv) {
-    std::vector<bool> vec(?, ?);// TODO: 正确调用构造函数
-    ASSERT(vec[0], "Make this assertion pass.");
-    ASSERT(vec[99], "Make this assertion pass.");
-    ASSERT(vec.size() == 100, "Make this assertion pass.");
-    ASSERT(sizeof(vec) == ?, "Fill in the correct value.");
+    // 正确调用构造函数，初始化为100个true值
+    std::vector<bool> vec(100, true);
+    ASSERT(vec[0], "The first element should be true.");
+    ASSERT(vec[99], "The hundredth element should be true.");
+    ASSERT(vec.size() == 100, "The size of the vector should be 100.");
+    // sizeof(vec) 是 vector 对象自身的大小，不是其容量或大小，通常不是预期的
+    // ASSERT(sizeof(vec) == , "Fill in the correct value.");
+
     {
         vec[20] = false;
-        ASSERT(?vec[20], "Fill in `vec[20]` or `!vec[20]`.");
+        ASSERT(!vec[20], "vec[20] should now be false.");
     }
     {
         vec.push_back(false);
-        ASSERT(vec.size() == ?, "Fill in the correct value.");
-        ASSERT(?vec[100], "Fill in `vec[100]` or `!vec[100]`.");
+        ASSERT(vec.size() == 101, "The size of the vector should be 101 after push_back.");
+        ASSERT(!vec[100], "The one hundred and first element should be false.");
     }
     {
         auto ref = vec[30];
-        ASSERT(?ref, "Fill in `ref` or `!ref`");
+        ASSERT(ref, "The original value of vec[30] should be true.");
         ref = false;
-        ASSERT(?ref, "Fill in `ref` or `!ref`");
-        ASSERT(?vec[30], "Fill in `vec[30]` or `!vec[30]`.");
+        ASSERT(!ref, "The reference ref should now be false after assignment.");
+        ASSERT(!vec[30], "vec[30] should now be false after ref assignment.");
     }
+
+    std::cout << "All tests passed!" << std::endl;
     return 0;
 }

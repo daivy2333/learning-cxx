@@ -42,38 +42,42 @@ int main(int argc, char **argv) {
     C c;
     D d;
 
-    ASSERT(a.virtual_name() == '?', MSG);
-    ASSERT(b.virtual_name() == '?', MSG);
-    ASSERT(c.virtual_name() == '?', MSG);
-    ASSERT(d.virtual_name() == '?', MSG);
-    ASSERT(a.direct_name() == '?', MSG);
-    ASSERT(b.direct_name() == '?', MSG);
-    ASSERT(c.direct_name() == '?', MSG);
-    ASSERT(d.direct_name() == '?', MSG);
+    
+    ASSERT(a.virtual_name() == 'A', MSG); // A::virtual_name called
+    ASSERT(b.virtual_name() == 'B', MSG); // B::virtual_name called
+    ASSERT(c.virtual_name() == 'C', MSG); // C::virtual_name called, marked final
+    ASSERT(d.virtual_name() == 'C', MSG); // D cannot override, C::virtual_name called
+
+    ASSERT(a.direct_name() == 'A', MSG); // A::direct_name called
+    ASSERT(b.direct_name() == 'B', MSG); // B::direct_name called
+    ASSERT(c.direct_name() == 'C', MSG); // C::direct_name called
+    ASSERT(d.direct_name() == 'D', MSG); // D::direct_name called, hiding C::direct_name
 
     A &rab = b;
     B &rbc = c;
     C &rcd = d;
 
-    ASSERT(rab.virtual_name() == '?', MSG);
-    ASSERT(rbc.virtual_name() == '?', MSG);
-    ASSERT(rcd.virtual_name() == '?', MSG);
-    ASSERT(rab.direct_name() == '?', MSG);
-    ASSERT(rbc.direct_name() == '?', MSG);
-    ASSERT(rcd.direct_name() == '?', MSG);
+    ASSERT(rab.virtual_name() == 'B', MSG); // B::virtual_name called, through A reference
+    ASSERT(rbc.virtual_name() == 'C', MSG); // C::virtual_name called, through B reference
+    ASSERT(rcd.virtual_name() == 'C', MSG); // C::virtual_name called, through C reference
+
+    ASSERT(rab.direct_name() == 'A', MSG); // A::direct_name called, through A reference
+    ASSERT(rbc.direct_name() == 'B', MSG); // B::direct_name called, through B reference
+    ASSERT(rcd.direct_name() == 'C', MSG); // C::direct_name called, through C reference
 
     A &rac = c;
     B &rbd = d;
 
-    ASSERT(rac.virtual_name() == '?', MSG);
-    ASSERT(rbd.virtual_name() == '?', MSG);
-    ASSERT(rac.direct_name() == '?', MSG);
-    ASSERT(rbd.direct_name() == '?', MSG);
+    ASSERT(rac.virtual_name() == 'C', MSG); // C::virtual_name called, through A reference
+    ASSERT(rbd.virtual_name() == 'C', MSG); // C::virtual_name called, through B reference
+
+    ASSERT(rac.direct_name() == 'A', MSG); // A::direct_name called, through A reference
+    ASSERT(rbd.direct_name() == 'B', MSG); // B::direct_name called, through B reference
 
     A &rad = d;
 
-    ASSERT(rad.virtual_name() == '?', MSG);
-    ASSERT(rad.direct_name() == '?', MSG);
+    ASSERT(rad.virtual_name() == 'C', MSG); // C::virtual_name called, through A reference
+    ASSERT(rad.direct_name() == 'A', MSG); // A::direct_name called, through A reference
 
     return 0;
 }
